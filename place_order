@@ -1,0 +1,18 @@
+sequenceDiagram
+    actor C as Customer
+    participant U as User
+    participant O as Order
+
+    Note over O: Order is in CREATED status with its items added
+
+    activate C
+    C->>U: placeOrder(order)
+    activate U
+    U->>O: updateStatus(CONFIRMED)
+    activate O
+    O->>O: status = CONFIRMED
+    O->>U: notify("Your order has been confirmed")
+    deactivate O
+    U-->>C: None (customer sees "Your order has been confirmed")
+    deactivate U
+    deactivate C

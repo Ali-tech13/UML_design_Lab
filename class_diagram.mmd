@@ -1,0 +1,53 @@
+classDiagram
+
+class User{
+    -int id
+    -str name
+    +placeOrder(order: Order) None
+    +notify(message: str) None
+}
+
+User "1" <-- "0..*" Order
+
+class Restaurant{
+    -int id
+    -str name
+    +getItems() list~Item~
+}
+
+class Item{
+    -int id
+    -str name
+    -float price
+}
+
+Restaurant "1" *-- "0..*" Item
+
+Restaurant "1" <-- "0..*" Order
+
+class Order{
+    -int id
+    -float totalPrice
+    -OrderStatus status
+    +addItem(item: Item, quantity: int) None
+    +updateStatus(newStatus: OrderStatus) None
+}
+
+Order "1" *-- "0..*" OrderItem
+
+Order --> OrderStatus
+
+class OrderItem{
+    -int quantity
+    -float unitPrice
+}
+
+OrderItem "0..*" --> "1" Item
+
+class OrderStatus{
+    <<enumeration>>
+    CREATED
+    CONFIRMED
+    PREPARED
+    DELIVERED
+}

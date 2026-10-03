@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor C as Customer
+    participant R as Restaurant
+    participant O as Order
+    participant OI as OrderItem
+
+    Note over O: Order is in CREATED status
+
+    activate C
+    C->>O: addItem(item, quantity)
+    activate O
+    O->>R: getItems()
+    activate R
+    R-->>O: list[Item]
+    deactivate R
+
+    alt item belongs to the order's restaurant
+        O->>OI: new OrderItem(item, quantity, unitPrice = item.price)
+        activate OI
+        OI-->>O: orderItem
+        deactivate OI
+        O->>O: totalPrice += quantity * unitPrice
+        O-->>C: None
+    else item belongs to another restaurant
+        O-->>C: error: item not available in this restaurant
+    end
+    deactivate O
+    deactivate C

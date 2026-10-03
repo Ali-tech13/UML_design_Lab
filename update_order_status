@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor S as RestaurantStaff
+    participant O as Order
+    participant U as User
+
+    Note over O: Order is in CONFIRMED status
+
+    activate S
+    S->>O: updateStatus(PREPARED)
+    activate O
+    O->>O: status = PREPARED
+    O->>U: notify("Your order is prepared")
+    activate U
+    U-->>O: None
+    deactivate U
+    O-->>S: None
+    deactivate O
+
+    S->>O: updateStatus(DELIVERED)
+    activate O
+    O->>O: status = DELIVERED
+    O->>U: notify("Your order has been delivered")
+    activate U
+    U-->>O: None
+    deactivate U
+    O-->>S: None
+    deactivate O
+    deactivate S
